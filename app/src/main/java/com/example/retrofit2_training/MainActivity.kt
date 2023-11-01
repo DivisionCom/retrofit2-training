@@ -33,14 +33,6 @@ class MainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create()).build()
         val productApi = retrofit.create(ProductApi::class.java)
 
-        binding.btnGet.setOnClickListener{
-            CoroutineScope(Dispatchers.IO).launch {
-                val product = productApi.getProductById()
-                runOnUiThread {
-                    binding.tvMain.text = product.title
-                }
-            }
-        }
     }
 
 }
