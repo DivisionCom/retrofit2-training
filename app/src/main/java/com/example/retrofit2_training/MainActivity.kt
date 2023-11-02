@@ -3,7 +3,12 @@ package com.example.retrofit2_training
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.retrofit2_training.databinding.ActivityMainBinding
+import com.example.retrofit2_training.retrofit.AuthRequest
 import com.example.retrofit2_training.retrofit.MainApi
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -29,6 +34,24 @@ class MainActivity : AppCompatActivity() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create()).build()
         val mainApi = retrofit.create(MainApi::class.java)
+
+        binding.btnSignIn.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val user = mainApi.auth(
+                    AuthRequest(
+                        binding.username.text.toString(),
+                        binding.password.text.toString()
+                    )
+                )
+                runOnUiThread {
+                    binding.apply {
+                        Picasso.get().load(user.image).into(ivAvatar)
+                        firstName.text = user.firstName
+                        lastName.text = user.lastName
+                    }
+                }
+            }
+        }
 
     }
 
