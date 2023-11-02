@@ -5,9 +5,18 @@
 
 ## Training With
 
-* Retrofit2
+* Rest API: Retrofit2 + okHttps3
+* Coroutines
+* RecyclerView
 
-### Dependencies
+## Description
+
+* for API requests the site https://dummyjson.com/ was used
+
+#### Authentication
+![auth_form](https://github.com/DivisionCom/retrofit2-training/assets/107028454/6fdb2b47-2e77-4d9c-9791-419afaf6dd24)
+
+## Dependencies
 
 * Using <b>Android</b> platform
 
