@@ -3,10 +3,7 @@ package com.example.retrofit2_training
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.retrofit2_training.databinding.ActivityMainBinding
-import com.example.retrofit2_training.retrofit.ProductApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.retrofit2_training.retrofit.MainApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -31,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             .baseUrl("https://dummyjson.com/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create()).build()
-        val productApi = retrofit.create(ProductApi::class.java)
+        val mainApi = retrofit.create(MainApi::class.java)
 
     }
 
