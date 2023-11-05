@@ -35,24 +35,6 @@ class MainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create()).build()
         val mainApi = retrofit.create(MainApi::class.java)
 
-        binding.btnSignIn.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                val user = mainApi.auth(
-                    AuthRequest(
-                        binding.username.text.toString(),
-                        binding.password.text.toString()
-                    )
-                )
-                runOnUiThread {
-                    binding.apply {
-                        Picasso.get().load(user.image).into(ivAvatar)
-                        firstName.text = user.firstName
-                        lastName.text = user.lastName
-                    }
-                }
-            }
-        }
-
     }
 
 }
