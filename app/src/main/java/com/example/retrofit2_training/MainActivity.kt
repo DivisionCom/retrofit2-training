@@ -2,6 +2,8 @@ package com.example.retrofit2_training
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.retrofit2_training.adapter.ProductAdapter
 import com.example.retrofit2_training.databinding.ActivityMainBinding
 import com.example.retrofit2_training.retrofit.AuthRequest
 import com.example.retrofit2_training.retrofit.MainApi
@@ -17,6 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 const val BASE_URL = "https://dummyjson.com/"
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: ProductAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,20 @@ class MainActivity : AppCompatActivity() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create()).build()
         val mainApi = retrofit.create(MainApi::class.java)
+
+        adapter = ProductAdapter()
+        binding.rcView.layoutManager = LinearLayoutManager(this)
+        binding.rcView.adapter = adapter
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val productObject = mainApi.getAllProducts()
+
+            runOnUiThread{
+                binding.apply {
+                    adapter.submitList(productObject.products)
+                }
+            }
+        }
 
     }
 
