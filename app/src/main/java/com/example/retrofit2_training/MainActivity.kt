@@ -2,6 +2,7 @@ package com.example.retrofit2_training
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.SearchView.OnQueryTextListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofit2_training.adapter.ProductAdapter
 import com.example.retrofit2_training.databinding.ActivityMainBinding
@@ -43,8 +44,28 @@ class MainActivity : AppCompatActivity() {
         binding.rcView.layoutManager = LinearLayoutManager(this)
         binding.rcView.adapter = adapter
 
+        binding.svProducts.setOnQueryTextListener(object : OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(text: String?): Boolean {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val productObject = text?.let { mainApi.getSearchProducts(it) }
+
+                    runOnUiThread {
+                        binding.apply {
+                            adapter.submitList(productObject?.products)
+                        }
+                    }
+                }
+                return true
+            }
+
+        })
+
         CoroutineScope(Dispatchers.IO).launch {
-            val productObject = mainApi.getAllProducts()
+            val productObject = mainApi.getSearchProducts("")
 
             runOnUiThread{
                 binding.apply {
