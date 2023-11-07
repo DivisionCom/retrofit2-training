@@ -8,6 +8,7 @@ import com.example.retrofit2_training.adapter.ProductAdapter
 import com.example.retrofit2_training.databinding.ActivityMainBinding
 import com.example.retrofit2_training.retrofit.AuthRequest
 import com.example.retrofit2_training.retrofit.MainApi
+import com.example.retrofit2_training.retrofit.User
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +45,18 @@ class MainActivity : AppCompatActivity() {
         binding.rcView.layoutManager = LinearLayoutManager(this)
         binding.rcView.adapter = adapter
 
+        var user: User? = null
+
+        CoroutineScope(Dispatchers.IO).launch {
+            user = mainApi.auth(AuthRequest(
+                username = "atuny0",
+                password = "9uQFF1Lh"
+            ))
+            runOnUiThread {
+                binding.svProducts.queryHint = "Enter your request, ${user?.username}"
+            }
+        }
+
         binding.svProducts.setOnQueryTextListener(object : OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return true
@@ -51,7 +64,8 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(text: String?): Boolean {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val productObject = text?.let { mainApi.getSearchProducts(it) }
+                    val productObject = text?.let { mainApi.getSearchProductsAuth(
+                        user?.token ?: "", it) }
 
                     runOnUiThread {
                         binding.apply {
