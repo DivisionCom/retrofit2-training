@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         CoroutineScope(Dispatchers.IO).launch {
-            val productObject = mainApi.getSearchProducts("")
+            val productObject = mainApi.getAllProducts()
 
             runOnUiThread{
                 binding.apply {
