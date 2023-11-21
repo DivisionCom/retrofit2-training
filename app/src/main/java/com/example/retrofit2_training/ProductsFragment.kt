@@ -37,12 +37,18 @@ class ProductsFragment : Fragment() {
         initRetrofit()
         initRvProducts()
 
+        getListProducts()
+    }
+
+    private fun getListProducts() {
         authViewModel.token.observe(viewLifecycleOwner){ token ->
             CoroutineScope(Dispatchers.IO).launch {
-                val list = mainApi.getAllProducts()
+                val list = mainApi.getAllProducts(token)
+                requireActivity().runOnUiThread {
+                    adapter.submitList(list.products)
+                }
             }
         }
-
     }
 
     private fun initRvProducts() = with(binding){
