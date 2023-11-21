@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.retrofit2_training.adapter.ProductAdapter
 import com.example.retrofit2_training.databinding.FragmentProductsBinding
 import com.example.retrofit2_training.retrofit.MainApi
 import okhttp3.OkHttpClient
@@ -17,6 +19,7 @@ class ProductsFragment : Fragment() {
     private lateinit var binding: FragmentProductsBinding
     private val authViewModel: AuthViewModel by activityViewModels()
     private lateinit var mainApi: MainApi
+    private lateinit var adapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +32,14 @@ class ProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRetrofit()
+        initRvProducts()
 
+    }
+
+    private fun initRvProducts() = with(binding){
+        adapter = ProductAdapter()
+        rvProducts.layoutManager = LinearLayoutManager(context)
+        rvProducts.adapter = adapter
     }
 
     private fun initRetrofit() {
