@@ -45,39 +45,6 @@ class MainActivity : AppCompatActivity() {
         binding.rcView.layoutManager = LinearLayoutManager(this)
         binding.rcView.adapter = adapter
 
-        var user: User? = null
-
-        CoroutineScope(Dispatchers.IO).launch {
-            user = mainApi.auth(AuthRequest(
-                username = "atuny0",
-                password = "9uQFF1Lh"
-            ))
-            runOnUiThread {
-                binding.svProducts.queryHint = "Enter your request, ${user?.username}"
-            }
-        }
-
-        binding.svProducts.setOnQueryTextListener(object : OnQueryTextListener{
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(text: String?): Boolean {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val productObject = text?.let { mainApi.getSearchProductsAuth(
-                        user?.token ?: "", it) }
-
-                    runOnUiThread {
-                        binding.apply {
-                            adapter.submitList(productObject?.products)
-                        }
-                    }
-                }
-                return true
-            }
-
-        })
-
         CoroutineScope(Dispatchers.IO).launch {
             val productObject = mainApi.getAllProducts()
 
