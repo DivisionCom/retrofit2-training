@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofit2_training.adapter.ProductAdapter
 import com.example.retrofit2_training.databinding.FragmentProductsBinding
 import com.example.retrofit2_training.retrofit.MainApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -33,6 +36,12 @@ class ProductsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRetrofit()
         initRvProducts()
+
+        authViewModel.token.observe(viewLifecycleOwner){ token ->
+            CoroutineScope(Dispatchers.IO).launch {
+                val list = mainApi.getAllProducts()
+            }
+        }
 
     }
 

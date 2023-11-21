@@ -23,8 +23,11 @@ interface MainApi {
     @GET("products/search")
     suspend fun getSearchProducts(@Query("q") searchName: String): AllProducts
 
-    @GET("products")
-    suspend fun getAllProducts(): AllProducts
+    @Headers("Content-Type: application/json")
+    @GET("auth/products")
+    suspend fun getAllProducts(
+        @Header("Authorization") token: String
+    ): AllProducts
 
     @POST("auth/login")
     suspend fun auth(@Body authRequest: AuthRequest): Response<User>
