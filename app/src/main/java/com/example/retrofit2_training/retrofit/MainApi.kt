@@ -1,5 +1,6 @@
 package com.example.retrofit2_training.retrofit
 
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -26,5 +27,5 @@ interface MainApi {
     suspend fun getAllProducts(): AllProducts
 
     @POST("auth/login")
-    suspend fun auth(@Body authRequest: AuthRequest): User
+    suspend fun auth(@Body authRequest: AuthRequest): Response<User>
 }
