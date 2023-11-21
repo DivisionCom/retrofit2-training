@@ -28,33 +28,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
-
-        val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create()).build()
-        val mainApi = retrofit.create(MainApi::class.java)
-
-        adapter = ProductAdapter()
-        binding.rcView.layoutManager = LinearLayoutManager(this)
-        binding.rcView.adapter = adapter
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val productObject = mainApi.getAllProducts()
-
-            runOnUiThread{
-                binding.apply {
-                    adapter.submitList(productObject.products)
-                }
-            }
-        }
-
     }
 
 }
